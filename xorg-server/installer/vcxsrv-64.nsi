@@ -150,6 +150,9 @@ Section "VcXsrv (required)"
   WriteRegStr HKLM SOFTWARE\VcXsrv "Install_Dir_64" "$INSTDIR"
 
   ; Write the uninstall keys for Windows
+  ClearErrors
+  ${GetOptions} $CMDLINE "/NoRemove" $R0
+  IfErrors 0 after_remove
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\VcXsrv" "DisplayIcon" "$INSTDIR\vcxsrv.exe"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\VcXsrv" "DisplayName" "${NAME}"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\VcXsrv" "DisplayVersion" "${VERSION}"
@@ -157,11 +160,12 @@ Section "VcXsrv (required)"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\VcXsrv" "UninstallString" '"$INSTDIR\uninstall.exe"'
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\VcXsrv" "NoModify" 1
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\VcXsrv" "NoRepair" 1
-  WriteUninstaller "uninstall.exe"
-
   ${GetSize} "$INSTDIR" "/S=0K" $0 $1 $2
   IntFmt $0 "0x%08X" $0
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\VcXsrv" "EstimatedSize" "$0"
+  
+after_remove:
+  WriteUninstaller "uninstall.exe"
 
   ; Register the xlaunch file extension
   WriteRegStr HKCR ".xlaunch" "" "XLaunchFile"
@@ -214,9 +218,16 @@ Section "Start Menu Shortcuts"
   SetRegView 64
 
   SetOutPath $INSTDIR
+  
+  ClearErrors
+  ${GetOptions} $CMDLINE "/NoIcons" $R0
+  IfErrors 0 after_sm_shorcuts
   CreateDirectory "$SMPROGRAMS\VcXsrv"
   CreateShortCut "$SMPROGRAMS\VcXsrv\Uninstall VcXsrv.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
   CreateShortCut "$SMPROGRAMS\VcXsrv\XLaunch.lnk" "$INSTDIR\xlaunch.exe" "" "$INSTDIR\xlaunch.exe" 0
+  
+after_sm_shorcuts:
+  
 SectionEnd
 
 ; Optional section (can be disabled by the user)
@@ -228,7 +239,14 @@ Section "Desktop Shortcuts"
   SetRegView 64
   
   SetOutPath $INSTDIR
+  
+  ClearErrors
+  ${GetOptions} $CMDLINE "/NoIcons" $R0
+  IfErrors 0 after_desktop_shorcuts
   CreateShortCut "$DESKTOP\XLaunch.lnk" "$INSTDIR\xlaunch.exe" "" "$INSTDIR\xlaunch.exe" 0
+  
+after_desktop_shorcuts:
+
 SectionEnd
 
 ;--------------------------------
