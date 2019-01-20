@@ -78,7 +78,8 @@ WinCmdlineRec g_cmdline = {
     NULL,                       /* screenname */
     NULL,                       /* mousename */
     FALSE,                      /* emulate3Buttons */
-    0                           /* emulate3Timeout */
+    0,                          /* emulate3Timeout */
+	NULL,                       /* appUserModelId */
 };
 
 winInfoRec g_winInfo = {
