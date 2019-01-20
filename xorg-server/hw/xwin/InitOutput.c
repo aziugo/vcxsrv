@@ -642,6 +642,11 @@ OsVendorPreInit(int argc, char *argv[])
     /* Log the command line */
     winLogCommandLine(argc, argv);
 
+    if (g_cmdline.appUserModelId != NULL) {
+        wchar_t wtext[1024];
+        mbstowcs(wtext, g_cmdline.appUserModelId, strlen(g_cmdline.appUserModelId) + 1); //Plus null
+        SetCurrentProcessExplicitAppUserModelID((PWSTR)wtext);
+    }
 }
 
 void
@@ -841,6 +846,9 @@ winUseMsg(void)
            "\tUse a transparent root window with an external window\n"
            "\tmanager (such as openbox).  Not to be used with\n"
            "\t-multiwindow or with -fullscreen.\n");
+
+    ErrorF("-appusermodelid APP_ID\n"
+           "\tDefine a specific AppUserModelId for windows7+.\n");
 
     ErrorF("-screen scr_num [width height [x y] | [[WxH[+X+Y]][@m]] ]\n"
            "\tEnable screen scr_num and optionally specify a width and\n"

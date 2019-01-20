@@ -1137,6 +1137,28 @@ ddxProcessArgument(int argc, char *argv[], int i)
         return 1;
     }
 
+	/*
+     * Look for the '-appusermodelid APP_ID' argument
+     */
+	if (IS_OPTION("-appusermodelid")) {
+
+		/* Display the usage message if the argument is malformed */
+		if (++i >= argc) {
+			UseMsg();
+			return 0;
+		}
+
+		if ((argv[i][0] == '-') || (argv[i][0] == '/')) {
+			UseMsg();
+			return 0;
+		}
+
+		g_cmdline.appUserModelId = argv[i];
+
+		/* Indicate that we have processed the argument */
+		return 2;
+	}
+
     return 0;
 }
 
