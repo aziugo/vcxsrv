@@ -3,10 +3,10 @@ import os,sys
 import sys
 
 if len(sys.argv)>1 and sys.argv[1]=="1":
-  os.system("./setenv.bat x86_amd64 >& null")
+  os.system("cmd /c setenv.bat x86_amd64 > null_file")
 else:
-  os.system("./setenv.bat x86 >& null")
-os.remove("null")
+  os.system("cmd /c setenv.bat x86 > null_file")
+os.remove("null_file")
 
 def readenv(filename):
   env={}
@@ -15,7 +15,7 @@ def readenv(filename):
     idx=line.find("=")
     if idx!=-1:
       var=line[:idx]
-      val=line[idx+1:-2]
+      val=line[idx+1:].rstrip().rstrip("/\\")
       env[var]=val
   return env
 

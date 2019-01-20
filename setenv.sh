@@ -1,9 +1,10 @@
 #!/bin/bash
 
 _mhmake=`which mhmake`
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 if [ ! -x "$_mhmake" ] ; then
-  DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
   export PATH=$DIR/tools/mhmake/Release64:$PATH
+  echo "PATH TO mhmake: $DIR/tools/mhmake/Release64"
 fi
 
 rm -f commands.sh

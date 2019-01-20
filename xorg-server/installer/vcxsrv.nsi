@@ -45,6 +45,7 @@ VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "${NAME}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "VcXsrv windows xserver"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${VERSION}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductVersion" "${VERSION}"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "Copyright Xorg Project"
 
 ; Request application privileges for Windows Vista
 RequestExecutionLevel admin
@@ -67,6 +68,7 @@ SetPluginUnload alwaysoff
 XPStyle on
 
 !define FUSION_REFCOUNT_UNINSTALL_SUBKEY_GUID {8cedc215-ac4b-488b-93c0-a50a49cb2fb8}
+
 
 ;--------------------------------
 ; The stuff to install

@@ -45,6 +45,7 @@ VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "${NAME}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "VcXsrv windows xserver"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${VERSION}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductVersion" "${VERSION}"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "Copyright Xorg Project"
 
 ; Request application privileges for Windows Vista
 RequestExecutionLevel admin
@@ -216,7 +217,6 @@ Section "Start Menu Shortcuts"
   CreateDirectory "$SMPROGRAMS\VcXsrv"
   CreateShortCut "$SMPROGRAMS\VcXsrv\Uninstall VcXsrv.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
   CreateShortCut "$SMPROGRAMS\VcXsrv\XLaunch.lnk" "$INSTDIR\xlaunch.exe" "" "$INSTDIR\xlaunch.exe" 0
-
 SectionEnd
 
 ; Optional section (can be disabled by the user)
@@ -226,10 +226,9 @@ Section "Desktop Shortcuts"
   SetShellVarContext All
 
   SetRegView 64
-
+  
   SetOutPath $INSTDIR
   CreateShortCut "$DESKTOP\XLaunch.lnk" "$INSTDIR\xlaunch.exe" "" "$INSTDIR\xlaunch.exe" 0
-
 SectionEnd
 
 ;--------------------------------
