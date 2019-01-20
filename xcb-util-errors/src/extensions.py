@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import sys
+import sys, glob
 from xml.etree.cElementTree import parse
 
 class Module(object):
@@ -83,8 +83,9 @@ def parseFile(filename):
 
 # Parse the xml file
 output_file = sys.argv[1]
-for input_file in sys.argv[2:]:
-    parseFile(input_file)
+for input_file_pattern in sys.argv[2:]:
+    for input_file in glob.glob(input_file_pattern):
+        parseFile(input_file)
 
 assert xproto != None
 

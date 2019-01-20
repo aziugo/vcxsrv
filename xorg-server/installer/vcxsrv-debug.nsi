@@ -41,6 +41,7 @@ VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "${NAME}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "VcXsrv windows xserver"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${VERSION}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductVersion" "${VERSION}"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "Copyright ${NAME} Project"
 
 ; Request application privileges for Windows Vista
 RequestExecutionLevel admin

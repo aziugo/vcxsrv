@@ -12,6 +12,10 @@ if [[ "$2" == "" ]] ; then
   echo "Please pass number of parallel builds as second argument"
   exit
 fi
+if [[ "$3" == "--unix" ]] ; then
+  # Ensure everything is in doc2unix format
+  find . -type f -not -path '*/\.git/*' -print0 | xargs -0 dos2unix
+fi
 
 function check-error {
     if [ $? -ne 0 ]; then
@@ -27,6 +31,14 @@ which MSBuild.exe > /dev/null 2>&1
 check-error 'Please install/set environment for visual studio 2017'
 which python.exe > /dev/null 2>&1
 check-error 'Make sure that python.exe is in the PATH. (e.g. cp /usr/bin/python2.7.exe /usr/bin/python.exe)'
+which python3.6m.exe > /dev/null 2>&1
+check-error 'Make sure that python3.6m.exe is in the PATH.'
+python3.6m.exe -c 'import lxml' > /dev/null 2>&1
+check-error 'Please install "python3-lxml" cygwin package.'
+python2.7 -c 'import mako.template' > /dev/null 2>&1
+check-error 'Please install "python2-mako" cygwin package.'
+cmd /c python -c 'import mako.template' > /dev/null 2>&1
+check-error 'Please check your cygwin installation.'
 
 # c:\perl should have a copy of strawberry perl portable edition
 which /cygdrive/c/perl/perl/bin/perl.exe > /dev/null 2>&1
@@ -38,7 +50,7 @@ export PATH=/cygdrive/c/perl/perl/bin:$PATH
 #set -v
 
 if [[ "$IS64" == "1" ]]; then
-	MSBuild.exe freetype/freetypevc10.sln /t:Build /p:Configuration="Release Multithreaded" /p:Platform=x64
+	cmd /c MSBuild.exe freetype/freetypevc10.sln /t:Build /p:Configuration="Release Multithreaded" /p:Platform=x64
 	check-error 'Error compiling freetype'
 	MSBuild.exe freetype/freetypevc10.sln /t:Build /p:Configuration="Debug Multithreaded" /p:Platform=x64
 	check-error 'Error compiling freetype'
@@ -105,7 +117,6 @@ cd ..
 #reuse the cygwin perl again
 export PATH=$ORIPATH
 
-
 if [[ "$IS64" == "1" ]]; then
 	MSBuild.exe tools/mhmake/mhmakevc10.sln /t:Build /p:Configuration=Release /p:Platform=x64
 	check-error 'Error compiling mhmake for release'
@@ -139,8 +150,3 @@ else
 	cd xorg-server/installer
 	./packageall.bat nox64
 fi
-
-
-
-
-
