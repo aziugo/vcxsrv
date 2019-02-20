@@ -91,6 +91,8 @@ extern DWORD g_dwCurrentThreadID;
 extern Bool g_fKeyboardHookLL;
 extern Bool g_fButton[3];
 
+extern char * g_appUserModelId;
+
 #ifdef XWIN_MULTIWINDOWEXTWM
 extern Bool g_fNoConfigureWindow;
 #endif

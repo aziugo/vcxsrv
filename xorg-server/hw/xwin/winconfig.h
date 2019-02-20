@@ -170,7 +170,6 @@ typedef struct {
     char *mouse;
     Bool emulate3buttons;
     long emulate3timeout;
-	char *appUserModelId;
 } WinCmdlineRec, *WinCmdlinePtr;
 
 extern WinCmdlineRec g_cmdline;

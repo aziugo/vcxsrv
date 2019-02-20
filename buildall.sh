@@ -14,7 +14,7 @@ if [[ "$2" == "" ]] ; then
 fi
 if [[ "$3" == "--unix" ]] ; then
   # Ensure everything is in doc2unix format
-  find . -type f -not -path '*/\.git/*' -print0 | xargs -0 dos2unix
+  find . -type f -not -path '*/\.git/*' -not -name "*.sln" -not -name "*.vcxproj" -not -name "*.vcxproj.filters" -not -name "*.nsi" -print0 | xargs -0 dos2unix
 fi
 
 function check-error {

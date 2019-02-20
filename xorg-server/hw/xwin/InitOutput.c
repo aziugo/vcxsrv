@@ -642,9 +642,9 @@ OsVendorPreInit(int argc, char *argv[])
     /* Log the command line */
     winLogCommandLine(argc, argv);
 
-    if (g_cmdline.appUserModelId != NULL) {
+    if (g_appUserModelId != NULL) {
         wchar_t wtext[1024];
-        mbstowcs(wtext, g_cmdline.appUserModelId, strlen(g_cmdline.appUserModelId) + 1); //Plus null
+        mbstowcs(wtext, g_appUserModelId, strlen(g_appUserModelId) + 1); //Plus null
         SetCurrentProcessExplicitAppUserModelID((PWSTR)wtext);
     }
 }
