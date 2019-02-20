@@ -93,4 +93,6 @@ extern Bool g_fButton[3];
 
 extern pthread_mutex_t g_pmTerminating;
 
+extern char * g_appUserModelId;
+
 #endif                          /* WINGLOBALS_H */

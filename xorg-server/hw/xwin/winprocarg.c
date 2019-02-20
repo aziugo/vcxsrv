@@ -1124,7 +1124,7 @@ ddxProcessArgument(int argc, char *argv[], int i)
 			return 0;
 		}
 
-		g_cmdline.appUserModelId = argv[i];
+		g_appUserModelId = argv[i];
 
 		/* Indicate that we have processed the argument */
 		return 2;

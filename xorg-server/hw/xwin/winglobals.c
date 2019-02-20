@@ -61,6 +61,7 @@ Bool g_fXdmcpEnabled = FALSE;
 Bool g_fAuthEnabled = FALSE;
 HICON g_hIconX = NULL;
 HICON g_hSmallIconX = NULL;
+char * g_appUserModelId = NULL;
 
 #ifndef RELOCATE_PROJECTROOT
 const char *g_pszLogFile = DEFAULT_LOGDIR "/XWin.%s.log";
@@ -99,6 +100,7 @@ HWND g_hwndClipboard = NULL;
 void *g_pClipboardDisplay = NULL;
 Window g_iClipboardWindow = None;
 Atom g_atomLastOwnedSelection = None;
+
 
 const char WIN_WINDOW_PROP[]=     "vcxsrv_window_prop_rl";
 const char WIN_WID_PROP[]=        "vcxsrv_wid_prop_rl";

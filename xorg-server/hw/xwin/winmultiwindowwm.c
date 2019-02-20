@@ -2166,8 +2166,9 @@ winApplyHints(WMInfoPtr pWMInfo, xcb_window_t iWindow, HWND hWnd, HWND * zstyle,
             irand_id = rand();
             asprintf(&rand_id, "%d", irand_id);
         }
+
         /* AppUserModelID in the following form CompanyName.ProductName.SubProduct.VersionInformation
-           VersionInformation is set random with NEWTAB and to display-number normally. No spaces allowed. */
+               VersionInformation is set random with NEWTAB and to display-number normally. No spaces allowed. */
         asprintf(&application_id,
                  "%s.%s.%s.%s",
                  XVENDORNAME,
@@ -2177,7 +2178,12 @@ winApplyHints(WMInfoPtr pWMInfo, xcb_window_t iWindow, HWND hWnd, HWND * zstyle,
                  (window_name) ? window_name : "SubProductUnknown",
                  (taskbar & TASKBAR_NEWTAB) ? rand_id :
                  (getenv("DISNO")) ? getenv("DISNO") : 0);
-        winSetAppUserModelID(hWnd, application_id);
+        if (g_appUserModelId == NULL) {
+            winSetAppUserModelID(hWnd, application_id);
+        }
+        else {
+            winSetAppUserModelID(hWnd, g_appUserModelId);
+        }
 
         free(application_id);
         free(res_name);

@@ -107,6 +107,7 @@ fcobjshash.gperf: Makefile stamp-fcobjshash.gperf
 	-@$(RM) stamp-fcobjshash.gperf
 	@$(MAKE) stamp-fcobjshash.gperf
 	@touch -r stamp-fcobjshash.gperf $@
+	@sed -i 's/\r$$//g' $@
 stamp-fcobjshash.gperf: fcobjshash.gperf.h fcobjs.h
 	$(AM_V_GEN) $(CPP) -I$(top_srcdir) $(CPPFLAGS) $< | \
 	$(SED) 's/^ *//;s/ *, */,/' | \
@@ -115,11 +116,11 @@ stamp-fcobjshash.gperf: fcobjshash.gperf.h fcobjs.h
 		/CUT_OUT_END/ { no_write=0; next; }; \
 		/^$$/||/^#/ { next; }; \
 		{ if (!no_write) print; next; }; \
-	' - > $@.tmp && \
+	' - | sed 's/\r$$//g' > $@.tmp && \
 	mv -f $@.tmp fcobjshash.gperf && touch $@ || ( $(RM) $@.tmp && false )
 
 $(builddir)/fcobjshash.h: Makefile fcobjshash.gperf
-	$(AM_V_GEN) $(GPERF) --pic -m 100 fcobjshash.gperf > $@.tmp && \
+	$(AM_V_GEN) sed 's/\r$$//g' fcobjshash.gperf | $(GPERF) --pic -m 100  > $@.tmp && \
 	mv -f $@.tmp $@ || ( $(RM) $@.tmp && false )
 
 EXTRA_DIST += \
