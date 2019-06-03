@@ -1,48 +1,55 @@
 #!/usr/bin/bash
 
+function on-error {
+    echo "$1" >&2
+    echo "Please press enter to quit..." >&2
+    read
+    exit 1
+}
+
+function check-error {
+    if [ $? -ne 0 ]; then
+        on-error "$1"
+    fi
+}
+
 if [[ "$1" == "1" ]] ; then
-source ./setenv.sh 1
+  source ./setenv.sh 1
 elif [[ "$1" == "0" ]] ; then
-source ./setenv.sh 0
+  source ./setenv.sh 0
 else
   echo "Please pass 1 (64-bit compilation) or 0 (32-bit compilation) as first argument"
   exit
 fi
+
 if [[ "$2" == "" ]] ; then
   echo "Please pass number of parallel builds as second argument"
   exit
 fi
+
 if [[ "$3" == "--unix" ]] ; then
   # Ensure everything is in doc2unix format
-  find . -type f -not -path '*/\.git/*' -not -name "*.sln" -not -name "*.vcxproj" -not -name "*.vcxproj.filters" -not -name "*.nsi" -print0 | xargs -0 dos2unix
+  echo "Converting files to unix format..."
+  find . -type f -not -path '*/\.git/*' -not -name "*.sln" -not -name "*.vcxproj" -not -name "*.vcxproj.filters" -not -name "*.nsi" -print0 | xargs -0 dos2unix -q
+  echo "Convertion done"
 fi
 
-function check-error {
-    if [ $? -ne 0 ]; then
-        echo $1
-        exit
-    fi
-}
+cmd /c where cygwin > /dev/null 2>&1 || on-error 'cygwin is not installed in path.'
+which nasm > /dev/null 2>&1 || on-error 'Please install nasm'
+# which MSBuild.exe > /dev/null 2>&1 || on-error 'Please install/set environment for visual studio 2017'
+which python.exe > /dev/null 2>&1 || on-error 'Make sure that python.exe is in the PATH. (e.g. cp /usr/bin/python2.7.exe /usr/bin/python.exe)'
+which python3.6m.exe > /dev/null 2>&1 || on-error 'Make sure that python3.6m.exe is in the PATH.'
+python3.6m.exe -c 'import lxml' > /dev/null 2>&1 || on-error 'Please install "python3-lxml" cygwin package.'
+python2.7 -c 'import mako.template' > /dev/null 2>&1 || on-error 'Please install "python2-mako" windows environment.'
+cmd /c python -c 'import mako.template' > /dev/null 2>&1 || on-error 'Please check your cygwin installation.'
+which flex > /dev/null 2>&1 || on-error 'Please install "flex" cygwin package.'
+which bison > /dev/null 2>&1 || on-error 'Please install "bison" cygwin package.'
+which gperf > /dev/null 2>&1 || on-error 'Please install "gperf" cygwin package.'
+which find > /dev/null 2>&1 || on-error 'Please install "findutils" cygwin package.'
+which /cygdrive/c/perl/perl/bin/perl.exe > /dev/null 2>&1 || on-error 'Please install strawberry perl portable edition into c:\perl'
 
-which nasm > /dev/null 2>&1
-check-error 'Please install nasm'
 
-which MSBuild.exe > /dev/null 2>&1
-check-error 'Please install/set environment for visual studio 2017'
-which python.exe > /dev/null 2>&1
-check-error 'Make sure that python.exe is in the PATH. (e.g. cp /usr/bin/python2.7.exe /usr/bin/python.exe)'
-which python3.6m.exe > /dev/null 2>&1
-check-error 'Make sure that python3.6m.exe is in the PATH.'
-python3.6m.exe -c 'import lxml' > /dev/null 2>&1
-check-error 'Please install "python3-lxml" cygwin package.'
-python2.7 -c 'import mako.template' > /dev/null 2>&1
-check-error 'Please install "python2-mako" cygwin package.'
-cmd /c python -c 'import mako.template' > /dev/null 2>&1
-check-error 'Please check your cygwin installation.'
 
-# c:\perl should have a copy of strawberry perl portable edition
-which /cygdrive/c/perl/perl/bin/perl.exe > /dev/null 2>&1
-check-error 'Please install strawberry perl portable edition into c:\perl'
 ORIPATH=$PATH
 export PATH=/cygdrive/c/perl/perl/bin:$PATH
 
